@@ -1,0 +1,21 @@
+{
+  "name": "QLPT",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "pnpm --stream start:dev",
+    "start": "pnpm --stream start",
+    "build": "pnpm --stream build",
+    "db:dev": "docker-compose -f docker-compose.dev.yaml up -d",
+    "generate": "npx prisma generate",
+    "migrate:dev": "npx prisma migrate dev --name init",
+    "migrate:deploy": "npx prisma migrate deploy",
+    "db:push": "npx prisma db push --preview-feature",
+    "db:seed": "npx prisma db seed --preview-feature",
+    "db:studio": "npx prisma studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

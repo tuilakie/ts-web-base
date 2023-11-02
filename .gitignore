@@ -1,0 +1,52 @@
+node_modules
+
+# ui/
+/ui/node_modules
+/ui/.DS_Store
+/ui/dist
+/ui/dist-ssr
+/ui/dev-dist
+/ui/*.local
+/ui/.env
+/ui/src/styles.css
+
+# /app
+
+# /app compiled output
+/app/dist
+/app/node_modules
+
+# app Logs
+/app/logs
+*.log
+/app/npm-debug.log*
+/app/pnpm-debug.log*
+/app/yarn-debug.log*
+/app/yarn-error.log*
+/app/lerna-debug.log*
+
+# OS
+/app/.DS_Store
+
+# Tests
+/app/coverage
+/app/.nyc_output
+
+# IDEs and editors
+/app/.idea
+/app/.project
+/app/.classpath
+/app/.c9/
+/app/*.launch
+/app/.settings/
+/app/*.sublime-workspace
+
+# IDE - VSCode
+/app/.vscode/*
+/app/!.vscode/settings.json
+/app/!.vscode/tasks.json
+/app/!.vscode/launch.json
+/app/!.vscode/extensions.json
+
+# docker
+/app/postgres_data

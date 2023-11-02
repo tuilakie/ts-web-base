@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  dev-database:
+    image: postgres:latest
+    container_name: dev-postgres
+    env_file:
+      - app/.env  # Đường dẫn đến tệp .env
+    ports:
+      - "5433:5432" # Cổng của máy host: cổng của container
+    volumes:
+      - app/postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
