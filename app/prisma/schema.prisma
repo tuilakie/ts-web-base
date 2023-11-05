@@ -7,19 +7,147 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  authorId  Int?
-  User      User?    @relation(fields: [authorId], references: [id])
+// user permissions is ENUM
+enum UserPermission {
+  // meaning of each permission
+  // ADMIN - user can do everything
+  // USER - user can do everything except permission update
+  // ITEMCREATE - user can create item
+  // ITEMUPDATE - user can update item
+  // ITEMDELETE - user can delete item
+  // PERMISSIONUPDATE - user can update permission
+  ADMIN
+  USER
+  ITEMCREATE
+  ITEMUPDATE
+  ITEMDELETE
+  PERMISSIONUPDATE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum RoomStatus {
+  AVAILABLE
+  RESERVED
+  RENTED
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  password  String
-  name      String?
-  Post      Post[]
+  id           String           @id @default(uuid())
+  email        String           @unique
+  name         String?
+  password     String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  permissions  UserPermission[]
+  departmentId String?
+  department   Department?      @relation(fields: [departmentId], references: [id])
+}
+
+model Department {
+  id        String   @id @default(uuid())
+  name      String
+  location  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+  rooms     Room[]
+}
+
+model Room {
+  id                  String      @id @default(uuid())
+  code                String
+  max                 Int
+  space               Int
+  roomPrice           Int
+  electricityPrice    Int
+  waterPrice          Int
+  internetPrice       Int
+  cleaningPrice       Int
+  washingmechinePrice Int
+  parkingPrice        Int
+  monthlyChargeDate   Int // 1-31
+  // number of days must be paid in advance
+  paymentTermDate     Int
+  status              RoomStatus
+  genderPriority      Gender[]
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  departmentId        String?
+  department          Department? @relation(fields: [departmentId], references: [id])
+  tenants             Tenant[]
+  contracts           Contract[]
+}
+
+model Tenant {
+  id         String    @id @default(uuid())
+  fullname   String
+  phone      String
+  cccd       String
+  cccdFront  String
+  cccdBack   String
+  email      String
+  joinDate   DateTime
+  dob        DateTime
+  gender     Gender
+  avatar     String
+  roomId     String?
+  room       Room?     @relation(fields: [roomId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Contract   Contract? @relation(fields: [contractId], references: [id])
+  contractId String?
+  Invoice    Invoice[]
+}
+
+model Contract {
+  id              String    @id @default(uuid())
+  from            DateTime
+  to              DateTime
+  deposit         Int
+  reason          String
+  initialElectric Int
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  primaryTenantId String?
+  tenaniId        String?
+  tenants         Tenant[]
+  roomId          String?
+  room            Room?     @relation(fields: [roomId], references: [id])
+  Invoice         Invoice[]
+}
+
+model Invoice {
+  id                   String        @id @default(uuid())
+  status               InvoiceStatus
+  payerId              String?
+  payer                Tenant?       @relation(fields: [payerId], references: [id])
+  contractId           String?
+  contract             Contract?     @relation(fields: [contractId], references: [id])
+  roomAmount           Int
+  electricityAmount    Int
+  waterAmount          Int
+  internetAmount       Int
+  cleaningAmount       Int
+  washingmechineAmount Int
+  parkingAmount        Int
+  totalAmount          Int
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  oldElectricityNumber Int
+  newElectricityNumber Int
+  usedElectricity      Int
+  oldWaterNumber       Int
+  newWaterNumber       Int
+  usedWater            Int
+}
+
+enum InvoiceStatus {
+  paid
+  unpaid
+  cancel
 }
