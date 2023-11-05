@@ -32,8 +32,8 @@ enum Gender {
 
 enum RoomStatus {
   AVAILABLE
-  RESERVED
-  RENTED
+  FULL
+  MAINTAIN
 }
 
 model User {

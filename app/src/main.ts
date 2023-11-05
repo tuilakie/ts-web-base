@@ -50,7 +50,7 @@ async function bootstrap() {
       .build();
     const document = SwaggerModule.createDocument(app, options);
 
-    SwaggerModule.setup(swaggerConfig.path || 'api', app, document);
+    SwaggerModule.setup(swaggerConfig.path + '/docs' || 'api', app, document);
   }
 
   const PORT = process.env.PORT || GLOBAL_CONFIG.nest.port;

@@ -5,7 +5,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { INVALID_EMAIL } from '../../shared/constants/strings';
 
 export class AuthResponseDTO {
-  user: User;
+  // user: <PickType<User, 'id' | 'name' | 'email'>>;
+  user: Pick<User, 'id' | 'name' | 'email'>;
   accessToken: string;
 }
 
